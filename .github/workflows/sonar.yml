@@ -1,0 +1,29 @@
+# .github/workflows/sonar.yml
+name: SonarCloud
+on:
+  push:
+    branches: [ "master", "branch-*", "main" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }     # richiesto da Sonar per il blame
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 11
+      - name: Cache Maven repo
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+      - name: Build & unit test
+        run: mvn -B verify               # mantiene la stessa linea di comando del CI esistente
+      - name: SonarCloud analysis
+        run: mvn -B sonar:sonar -Dsonar.login=$SONAR_TOKEN
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
