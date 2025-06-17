@@ -31,8 +31,6 @@ jobs:
             8
             11
             17
-            21
-            24
 
       # 3) Cache della repo Maven (riduce ~60-70 % del tempo di build)
       - name: Cache Maven repository
