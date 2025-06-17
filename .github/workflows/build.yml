@@ -45,7 +45,7 @@ jobs:
       # 4) Build completo + unit test (2 retry automatici per test flakies)
       - name: Build & Unit Test
         run: |
-          mvn -B -ntp clean verify \
+          mvn -B -e -X -ntp clean verify \
               -Drat.skip=false \
               -Dsurefire.rerunFailingTestsCount=2
 
@@ -54,7 +54,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          mvn -B -ntp sonar:sonar \
+          mvn -B -e -X -ntp sonar:sonar \
               -Dsonar.token=$SONAR_TOKEN
 
       # 6) Quality Gate (fallisce il job se il gate è rosso)
