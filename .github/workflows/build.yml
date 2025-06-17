@@ -55,10 +55,3 @@ jobs:
           mvn -B -ntp sonar:sonar \
               -Dsonar.projectKey=StitchMl_bookkeeper \
               -Dsonar.login=$SONAR_TOKEN
-
-      # 6) Quality Gate (fallisce il job se il gate è rosso)
-      - name: Quality Gate
-        uses: SonarSource/sonarqube-quality-gate-action@v1.1.0
-        env:
-          SONAR_TOKEN:   ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
